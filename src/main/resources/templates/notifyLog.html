@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>spring boot——websocket</title>
+    <script src="//cdn.bootcss.com/angular.js/1.5.6/angular.min.js"></script>
+    <script src="https://cdn.bootcss.com/sockjs-client/1.1.4/sockjs.min.js"></script>
+    <script src="https://cdn.bootcss.com/stomp.js/2.3.3/stomp.min.js"></script>
+    <script src="//cdn.bootcss.com/jquery/2.1.4/jquery.js"></script>
+    <script type="text/javascript">
+
+        var stompClient = null;
+
+        var app = angular.module('app', []);
+        app.controller('MainController', function ($rootScope, $scope, $http) {
+
+            $scope.data = {
+                //连接状态
+                connected: false,
+                //消息
+                message: '',
+                rows: []
+            };
+
+            //连接
+            $scope.connect = function () {
+                var socket = new SockJS('/my-websocket');
+                stompClient = Stomp.over(socket);
+                stompClient.connect({}, function (frame) {
+                    // 注册推送时间回调
+                    stompClient.subscribe('/topic/callbackNotifyLog', function (r) {
+                        // 接收服务端的实时日志并添加到HTML页面中
+                        $("#log-container div").append(r.body + '<br/>');
+                        // 滚动条滚动到最低部
+                        $("#log-container").scrollTop($("#log-container div").height() - $("#log-container").height());
+                        $scope.data.connected = true;
+                        $scope.$apply();
+                    });
+
+                    $scope.data.connected = true;
+                    $scope.$apply();
+                });
+            };
+
+            $scope.disconnect = function () {
+                if (stompClient != null) {
+                    stompClient.disconnect();
+                }
+                $scope.data.connected = false;
+            }
+
+        });
+        /*]]>*/
+    </script>
+</head>
+<body ng-app="app" ng-controller="MainController">
+
+
+<label>收到的通知:</label>
+<button type="button" ng-disabled="data.connected" ng-click="connect()">连接</button>
+<button type="button" ng-click="disconnect()" ng-disabled="!data.connected">断开</button>
+<br/>
+<br/>
+<div id="log-container" style="height: 450px; overflow-y: scroll; background: #333; color: #aaa; padding: 10px;">
+    <div>
+    </div>
+</div>
+</body>
+</html>
