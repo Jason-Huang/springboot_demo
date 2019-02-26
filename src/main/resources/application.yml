@@ -2,10 +2,10 @@ spring:
   profiles:
     active: dev
   datasource:
-    driver-class-name: oracle.jdbc.OracleDriver
-    url: jdbc:oracle:thin:@192.168.1.202:1521:rac
-    username: newcieccpay_test
-    password: newcieccpay_test
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.56.102:3306/jasontest?characterEncoding=utf8
+    username: jason
+    password: jason
   jpa:
     hibernate:
       ddl-auto: validate

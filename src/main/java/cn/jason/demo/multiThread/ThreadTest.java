@@ -1,9 +1,13 @@
 package cn.jason.demo.multiThread;
 
-/*public class ThreadTest implements Runnable {
-    MyService service
+import java.util.concurrent.locks.ReentrantLock;
+
+public class ThreadTest implements Runnable {
+    ReentrantLock lock = new ReentrantLock();
+
     @Override
     public void run() {
-
+        lock.lock();
+        lock.unlock();
     }
-}*/
+}

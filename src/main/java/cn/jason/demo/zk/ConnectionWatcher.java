@@ -21,7 +21,7 @@ public class ConnectionWatcher implements Watcher {
     @Override
     public void process(WatchedEvent event) {
         if (event.getState() == Event.KeeperState.SyncConnected) {
-//            connectedSignal.countDown();';'
+            connectedSignal.countDown();
         }
     }
 
