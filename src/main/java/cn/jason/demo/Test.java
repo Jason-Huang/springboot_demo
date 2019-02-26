@@ -33,6 +33,7 @@ public class Test {
         }
         cdl.await();
         t.print();
+        System.out.println("");
     }
 
 }
