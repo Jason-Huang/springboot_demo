@@ -6,7 +6,7 @@ public class ArithmeticTest {
         ArithmeticTest sort = new ArithmeticTest();
 //        int[] sortedA = sort.bubbleSort(a);
 //        int[] sortedA = sort.selectionSort(a);
-        int[] sortedA = sort.insertionSort(a);
+        int[] sortedA = sort.selectionSort2(a);
         for (int i = 0; i < a.length; i++) {
             System.out.print(a[i] + " ");
         }
@@ -25,6 +25,12 @@ public class ArithmeticTest {
         }
         return a;
     }
+
+    /**
+     * 每一次从待排序的数据元素中选出最小（或最大）的一个元素，存放在序列的起始位置，
+     * 再从剩余未排序元素中继续寻找最小（大）元素，然后放到已排序序列的末尾。
+     * 选择排序是不稳定的排序方法。
+     */
     public int[] selectionSort(int[] a) {
         int len = a.length;
         for (int i = 0; i < len - 1; i++) {
@@ -34,12 +40,17 @@ public class ArithmeticTest {
                     minIndex = j;
                 }
             }
-            int temp = a[i];
-            a[i] = a[minIndex];
-            a[minIndex] = temp;
+            swap(a, i, minIndex);
         }
         return a;
     }
+
+    private void swap(int[] a, int i, int minIndex) {
+        int temp = a[i];
+        a[i] = a[minIndex];
+        a[minIndex] = temp;
+    }
+
     public int[] insertionSort(int[] a) {
         int len = a.length;
         int preIndex, current;
@@ -52,6 +63,40 @@ public class ArithmeticTest {
             }
             a[preIndex + 1] = current;
         }
+        return a;
+    }
+
+    /**
+     * 每一次从待排序的数据元素中选出最小（或最大）的一个元素，存放在序列的起始位置，
+     * 再从剩余未排序元素中继续寻找最小（大）元素，然后放到已排序序列的末尾。
+     * 选择排序是不稳定的排序方法。
+     */
+    public int[] selectionSort2(int[] a) {
+        int left = 0;
+        int right = a.length - 1;
+        int minIndex, maxIndex;
+        while (left < right) {
+            minIndex = left;
+            maxIndex = right;
+            for (int i = left; i <= right; i++) {
+                if (a[i] < a[minIndex]) {
+                    minIndex = i;
+                }
+                if (a[i] > a[maxIndex]) {
+                    maxIndex = i;
+                }
+            }
+
+            swap(a, right, maxIndex);
+            if (minIndex == right) {
+                minIndex = maxIndex;
+            }
+            swap(a, left, minIndex);
+            left++;
+            right--;
+        }
+
+
         return a;
     }
 

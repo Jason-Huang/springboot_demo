@@ -1,39 +1,40 @@
 package cn.jason.demo;
 
 
-import java.util.concurrent.*;
-
 public class Test {
-    private int data = 0;
-
-    public void add1() {
-        data++;
-    }
-
-    public synchronized void add2() {
-        data++;
-    }
-
-    public void print() {
-        System.out.println(data);
-    }
 
     public static void main(String[] args) throws InterruptedException {
-        int threadCount = 200;
-        final CountDownLatch cdl = new CountDownLatch(threadCount);
-        final Test t = new Test();
-        for (int i = 0; i < threadCount; i++) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    t.add2();
-                    cdl.countDown();
-                }
-            }).start();
+        Integer x = 0;
+        System.out.println(x+1>x);
+    }
+
+    public static void print(int size) {
+        if (size % 2 == 0) {
+            size++; // 计算菱形大小
         }
-        cdl.await();
-        t.print();
-        System.out.println("");
+        for (int i = 0; i < size / 2 + 1; i++) {
+            for (int j = size / 2 + 1; j > i + 1; j--) {
+                System.out.print(" "); // 输出左上角位置的空白
+            }
+            for (int j = 0; j < 2 * i + 1; j++) {
+
+                System.out.print("*"); // 输出菱形上半部边缘
+
+            }
+            System.out.println(); // 换行
+        }
+        for (int i = size / 2 + 1; i < size; i++) {
+            for (int j = 0; j < i - size / 2; j++) {
+                System.out.print(" "); // 输出菱形左下角空白
+            }
+            for (int j = 0; j < 2 * size - 1 - 2 * i; j++) {
+
+                System.out.print("*"); // 输出菱形下半部边缘
+
+            }
+            System.out.println(); // 换行
+        }
     }
 
 }
+
